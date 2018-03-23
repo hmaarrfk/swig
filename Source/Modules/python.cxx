@@ -913,9 +913,11 @@ public:
        * module. */
       Printv(default_import_code, "del _swig_python_version_info\n\n", NULL);
 
+      #if 0
       if (modern || !classic) {
 	Printv(f_shadow, "try:\n", tab4, "_swig_property = property\n", "except NameError:\n", tab4, "pass  # Python < 2.2 doesn't have 'property'.\n\n", NULL);
       }
+      #endif
 
       /* Need builtins to qualify names like Exception that might also be
          defined in this module (try both Python 3 and Python 2 names) */
@@ -4498,7 +4500,7 @@ public:
 
 	  Printv(f_shadow, tab4, "__getattr__ = lambda self, name: _swig_getattr(self, ", class_name, ", name)\n", NIL);
 	} else {
-	  Printv(f_shadow, tab4, "thisown = _swig_property(lambda x: x.this.own(), ", "lambda x, v: x.this.own(v), doc='The membership flag')\n", NIL);
+	  Printv(f_shadow, tab4, "thisown = property(lambda x: x.this.own(), ", "lambda x, v: x.this.own(v), doc='The membership flag')\n", NIL);
 	  /* Add static attribute */
 	  if (GetFlag(n, "feature:python:nondynamic")) {
 	    Printv(f_shadow_file,
@@ -5090,7 +5092,7 @@ public:
       if (!classic) {
 	if (!modern)
 	  Printv(f_shadow, tab4, "if _newclass:\n", tab4, NIL);
-	Printv(f_shadow, tab4, symname, " = _swig_property(", module, ".", getname, NIL);
+	Printv(f_shadow, tab4, symname, " = property(", module, ".", getname, NIL);
 	if (assignable)
 	  Printv(f_shadow, ", ", module, ".", setname, NIL);
 	Printv(f_shadow, ")\n", NIL);
@@ -5164,7 +5166,7 @@ public:
 	if (!classic && !builtin) {
 	  if (!modern)
 	    Printv(f_shadow, tab4, "if _newclass:\n", tab4, NIL);
-	  Printv(f_shadow, tab4, symname, " = _swig_property(", module, ".", getname, NIL);
+	  Printv(f_shadow, tab4, symname, " = property(", module, ".", getname, NIL);
 	  if (assignable)
 	    Printv(f_shadow, ", ", module, ".", setname, NIL);
 	  Printv(f_shadow, ")\n", NIL);

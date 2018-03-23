@@ -357,6 +357,7 @@ matrix:
 before_install:
   - date -u
   - uname -a
+  - if test "$SWIGLANG" = "python"; then exit(0); else exit(1); fi
   - if test "$TRAVIS_OS_NAME" = "linux"; then lscpu && cat /proc/cpuinfo | grep "model name" && cat /proc/meminfo | grep MemTotal; fi
   - if test "$TRAVIS_OS_NAME" = "osx"; then sysctl -a | grep brand_string; fi
     # Travis overrides CC environment with compiler predefined values

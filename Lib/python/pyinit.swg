@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
- * The start of the Python initialization function 
+ * The start of the Python initialization function
  * ------------------------------------------------------------ */
 
 %insert(init) "swiginit.swg"
@@ -18,12 +18,12 @@ extern "C" {
 #define SWIG_newvarlink()                             SWIG_Python_newvarlink()
 #define SWIG_addvarlink(p, name, get_attr, set_attr)  SWIG_Python_addvarlink(p, name, get_attr, set_attr)
 #define SWIG_InstallConstants(d, constants)           SWIG_Python_InstallConstants(d, constants)
- 
+
 /* -----------------------------------------------------------------------------
  * global variable support code.
  * ----------------------------------------------------------------------------- */
- 
-typedef struct swig_globalvar {   
+
+typedef struct swig_globalvar {
   char       *name;                  /* Name of global variable */
   PyObject *(*get_attr)(void);       /* Return the current value */
   int       (*set_attr)(PyObject *); /* Set the value */
@@ -175,15 +175,9 @@ swig_varlink_type(void) {
       0,                                  /* tp_clear */
       0,                                  /* tp_richcompare */
       0,                                  /* tp_weaklistoffset */
-#if PY_VERSION_HEX >= 0x02020000
       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, /* tp_iter -> tp_weaklist */
-#endif
-#if PY_VERSION_HEX >= 0x02030000
       0,                                  /* tp_del */
-#endif
-#if PY_VERSION_HEX >= 0x02060000
       0,                                  /* tp_version_tag */
-#endif
 #if PY_VERSION_HEX >= 0x03040000
       0,                                  /* tp_finalize */
 #endif
@@ -191,20 +185,14 @@ swig_varlink_type(void) {
       0,                                  /* tp_allocs */
       0,                                  /* tp_frees */
       0,                                  /* tp_maxalloc */
-#if PY_VERSION_HEX >= 0x02050000
       0,                                  /* tp_prev */
-#endif
       0                                   /* tp_next */
 #endif
     };
     varlink_type = tmp;
     type_init = 1;
-#if PY_VERSION_HEX < 0x02020000
-    varlink_type.ob_type = &PyType_Type;
-#else
     if (PyType_Ready(&varlink_type) < 0)
       return NULL;
-#endif
   }
   return &varlink_type;
 }
@@ -219,7 +207,7 @@ SWIG_Python_newvarlink(void) {
   return ((PyObject*) result);
 }
 
-SWIGINTERN void 
+SWIGINTERN void
 SWIG_Python_addvarlink(PyObject *p, char *name, PyObject *(*get_attr)(void), int (*set_attr)(PyObject *p)) {
   swig_varlinkobject *v = (swig_varlinkobject *) p;
   swig_globalvar *gv = (swig_globalvar *) malloc(sizeof(swig_globalvar));
@@ -238,8 +226,8 @@ SWIG_Python_addvarlink(PyObject *p, char *name, PyObject *(*get_attr)(void), int
 
 SWIGINTERN PyObject *
 SWIG_globals(void) {
-  static PyObject *_SWIG_globals = 0; 
-  if (!_SWIG_globals) _SWIG_globals = SWIG_newvarlink();  
+  static PyObject *_SWIG_globals = 0;
+  if (!_SWIG_globals) _SWIG_globals = SWIG_newvarlink();
   return _SWIG_globals;
 }
 
@@ -290,7 +278,7 @@ SWIG_Python_FixMethods(PyMethodDef *methods,
       swig_const_info *ci = 0;
       const char *name = c + 10;
       for (j = 0; const_table[j].type; ++j) {
-	if (strncmp(const_table[j].name, name, 
+	if (strncmp(const_table[j].name, name,
 		    strlen(const_table[j].name)) == 0) {
 	  ci = &(const_table[j]);
 	  break;
@@ -317,7 +305,7 @@ SWIG_Python_FixMethods(PyMethodDef *methods,
       }
     }
   }
-} 
+}
 
 #ifdef __cplusplus
 }
@@ -331,7 +319,7 @@ SWIG_Python_FixMethods(PyMethodDef *methods,
 extern "C"
 #endif
 
-SWIGEXPORT 
+SWIGEXPORT
 #if PY_VERSION_HEX >= 0x03000000
   PyObject*
 #else
@@ -454,4 +442,3 @@ SWIG_init(void) {
 
   SWIG_InstallConstants(d,swig_const_table);
 %}
-

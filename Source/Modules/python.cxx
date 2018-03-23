@@ -729,24 +729,6 @@ public:
 
     Printf(f_runtime, "\n");
 
-    Printf(f_header, "#if (PY_VERSION_HEX <= 0x02000000)\n");
-    Printf(f_header, "# if !defined(SWIG_PYTHON_CLASSIC)\n");
-    Printf(f_header, "#  error \"This python version requires swig to be run with the '-classic' option\"\n");
-    Printf(f_header, "# endif\n");
-    Printf(f_header, "#endif\n");
-
-    if (modern) {
-      Printf(f_header, "#if (PY_VERSION_HEX <= 0x02020000)\n");
-      Printf(f_header, "# error \"This python version requires swig to be run with the '-nomodern' option\"\n");
-      Printf(f_header, "#endif\n");
-    }
-
-    if (modernargs) {
-      Printf(f_header, "#if (PY_VERSION_HEX <= 0x02020000)\n");
-      Printf(f_header, "# error \"This python version requires swig to be run with the '-nomodernargs' option\"\n");
-      Printf(f_header, "#endif\n");
-    }
-
     if (fastunpack) {
       Printf(f_header, "#ifndef METH_O\n");
       Printf(f_header, "# error \"This python version requires swig to be run with the '-nofastunpack' option\"\n");
@@ -4167,9 +4149,7 @@ public:
     printSlot(f, getSlot(n, "feature:python:tp_subclasses"), "tp_subclasses", "PyObject *");
     printSlot(f, getSlot(n, "feature:python:tp_weaklist"), "tp_weaklist", "PyObject *");
     printSlot(f, getSlot(n, "feature:python:tp_del"), "tp_del", "destructor");
-    Printv(f, "#if PY_VERSION_HEX >= 0x02060000\n", NIL);
     printSlot(f, getSlot(n, "feature:python:tp_version_tag"), "tp_version_tag", "int");
-    Printv(f, "#endif\n", NIL);
     Printv(f, "#if PY_VERSION_HEX >= 0x03040000\n", NIL);
     printSlot(f, getSlot(n, "feature:python:tp_finalize"), "tp_finalize", "destructor");
     Printv(f, "#endif\n", NIL);
@@ -4177,9 +4157,7 @@ public:
     printSlot(f, getSlot(n, "feature:python:tp_allocs"), "tp_allocs", "Py_ssize_t");
     printSlot(f, getSlot(n, "feature:python:tp_frees"), "tp_frees", "Py_ssize_t");
     printSlot(f, getSlot(n, "feature:python:tp_maxalloc"), "tp_maxalloc", "Py_ssize_t");
-    Printv(f, "#if PY_VERSION_HEX >= 0x02050000\n", NIL);
     printSlot(f, getSlot(n, "feature:python:tp_prev"), "tp_prev");
-    Printv(f, "#endif\n", NIL);
     printSlot(f, getSlot(n, "feature:python:tp_next"), "tp_next");
     Printv(f, "#endif\n", NIL);
     Printf(f, "  },\n");
@@ -4245,9 +4223,7 @@ public:
     printSlot(f, getSlot(n, "feature:python:nb_divide"), "nb_true_divide", "binaryfunc");
     printSlot(f, getSlot(n, "feature:python:nb_inplace_floor_divide"), "nb_inplace_floor_divide", "binaryfunc");
     printSlot(f, getSlot(n, "feature:python:nb_inplace_divide"), "nb_inplace_true_divide", "binaryfunc");
-    Printv(f, "#if PY_VERSION_HEX >= 0x02050000\n", NIL);
     printSlot(f, getSlot(n, "feature:python:nb_index"), "nb_index", "unaryfunc");
-    Printv(f, "#endif\n", NIL);
     Printv(f, "#if PY_VERSION_HEX >= 0x03050000\n", NIL);
     printSlot(f, getSlot(n, "feature:python:nb_matrix_multiply"), "nb_matrix_multiply", "binaryfunc");
     printSlot(f, getSlot(n, "feature:python:nb_inplace_matrix_multiply"), "nb_inplace_matrix_multiply", "binaryfunc");
@@ -4291,10 +4267,8 @@ public:
     printSlot(f, getSlot(n, "feature:python:bf_getsegcount"), "bf_getsegcount", "segcountproc");
     printSlot(f, getSlot(n, "feature:python:bf_getcharbuffer"), "bf_getcharbuffer", "charbufferproc");
     Printv(f, "#endif\n", NIL);
-    Printv(f, "#if PY_VERSION_HEX >= 0x02060000\n", NIL);
     printSlot(f, getSlot(n, "feature:python:bf_getbuffer"), "bf_getbuffer", "getbufferproc");
     printSlot(f, getSlot(n, "feature:python:bf_releasebuffer"), "bf_releasebuffer", "releasebufferproc");
-    Printv(f, "#endif\n", NIL);
     Printf(f, "  },\n");
 
     // PyObject *ht_name, *ht_slots, *ht_qualname;

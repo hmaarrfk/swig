@@ -923,6 +923,14 @@ public:
          defined in this module (try both Python 3 and Python 2 names) */
       Printv(f_shadow, "try:\n", tab4, "import builtins as __builtin__\n", "except ImportError:\n", tab4, "import __builtin__\n", NULL);
 
+      if (directorsEnabled()) {
+        Printv(f_shadow, "import weakref\n", NIL);
+      }
+      // Try loading weakref.proxy, which is only available in Python 2.1 and higher
+      //Printv(f_shadow,
+      //       "try:\n", tab4, "import weakref\n", tab4, "weakref_proxy = weakref.proxy\n", "except __builtin__.Exception:\n", tab4, "weakref_proxy = lambda x: x\n", "\n\n", NIL);
+      //    }
+
       /* if (!modern) */
       /* always needed, a class can be forced to be no-modern, such as an exception */
       {
@@ -985,12 +993,6 @@ public:
 	       tab4, tab4, tab4, "set(self, name, value)\n",
 	       tab4, tab4, "else:\n",
 	       tab4, tab4, tab4, "raise AttributeError(\"You cannot add attributes to %s\" % self)\n", tab4, "return set_attr\n\n\n", NIL);
-      }
-
-      if (directorsEnabled()) {
-	// Try loading weakref.proxy, which is only available in Python 2.1 and higher
-	Printv(f_shadow,
-	       "try:\n", tab4, "import weakref\n", tab4, "weakref_proxy = weakref.proxy\n", "except __builtin__.Exception:\n", tab4, "weakref_proxy = lambda x: x\n", "\n\n", NIL);
       }
     }
     // Include some information in the code
@@ -3882,7 +3884,7 @@ public:
 	Printv(f_shadow, tab8, "self.this.disown()\n", NIL);
 #endif
 	Printv(f_shadow, tab8, module, ".", mrename, "(self)\n", NIL);
-	Printv(f_shadow, tab8, "return weakref_proxy(self)\n", NIL);
+	Printv(f_shadow, tab8, "return weakref.proxy(self)\n", NIL);
 	Delete(mrename);
       }
     }
